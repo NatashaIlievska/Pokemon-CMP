@@ -1,14 +1,28 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# Pokémon-CMP
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+A cross-platform Pokémon app built with **Kotlin Multiplatform** and **Compose Multiplatform**.  
+This project demonstrates modern UI architecture, shared business logic, and multiplatform image loading — all written in pure Kotlin.
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+---
+
+## Features
+
+- **Compose Multiplatform UI** — shared user interface for Android and iOS
+- **Kotlin Multiplatform architecture** — shared ViewModels and domain logic
+- **Ktor-based networking** — retrieves data from external Pokémon API
+- **Kamel image loading** — lightweight and platform-independent image loader
+- **Voyager navigation** — simple, stack-based screen navigation across platforms
+- **Koin DI** — shared dependency injection for consistent, testable logic
+- **Clean architecture** — separation of concerns across data, domain, and presentation layers
 
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+---
+
+## Platforms
+
+- Android
+- iOS
+
+
+
+

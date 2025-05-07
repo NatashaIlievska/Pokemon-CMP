@@ -27,7 +27,11 @@ kotlin {
             isStatic = true
         }
     }
-    
+
+    sourceSets.all {
+        languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
+    }
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
@@ -35,6 +39,7 @@ kotlin {
 
             implementation(libs.ktor.client.android)
         }
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -59,6 +64,7 @@ kotlin {
 
             implementation(libs.media.kamel)
         }
+
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }

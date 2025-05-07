@@ -12,23 +12,26 @@ import org.koin.dsl.module
 
 val networkModule = module {
 
-    single {
-        HttpClient {
-            install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                    isLenient = true
-                    prettyPrint = true
-                })
-            }
-            install(HttpTimeout) {
-                requestTimeoutMillis = 5_000
-            }
-        }
-    }
+    single { createHttpClient() }
 
     single { PokemonService(get()) }
 
     single<PokemonRepository> { PokemonRepositoryImpl(get()) }
 }
+
+fun createHttpClient(): HttpClient = HttpClient {
+    install(ContentNegotiation) {
+        json(
+            Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+                prettyPrint = true
+            }
+        )
+    }
+    install(HttpTimeout) {
+        requestTimeoutMillis = 5_000
+    }
+}
+
 

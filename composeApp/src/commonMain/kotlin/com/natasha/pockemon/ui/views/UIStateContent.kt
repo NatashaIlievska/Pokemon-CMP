@@ -10,6 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.natasha.pockemon.utils.UiState
+import org.jetbrains.compose.resources.stringResource
+import pockemon.composeapp.generated.resources.Res
+import pockemon.composeapp.generated.resources.no_data_available
+import pockemon.composeapp.generated.resources.something_went_wrong
 
 @Composable
 fun <T> UiStateContent(
@@ -30,7 +34,7 @@ fun <T> UiStateContent(
                 .verticalScroll(rememberScrollState())
         ) {
             ErrorView(
-                errorMessage = it ?: "Something went wrong",
+                errorMessage = it ?: stringResource(Res.string.something_went_wrong),
                 onRetryPress = retryCallback
             )
         }
@@ -47,7 +51,7 @@ fun <T> UiStateContent(
             }
             is UiState.Success -> {
                 if (uiState.data == null) {
-                    failureContent("No data available")
+                    failureContent(stringResource(Res.string.no_data_available))
                 } else {
                     successContent(uiState.data)
                 }

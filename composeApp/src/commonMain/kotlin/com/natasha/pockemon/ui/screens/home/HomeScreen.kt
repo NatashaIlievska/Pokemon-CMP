@@ -3,64 +3,64 @@ package com.natasha.pockemon.ui.screens.home
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.koinScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.natasha.pockemon.data.model.Pokemon
 import com.natasha.pockemon.ui.screens.detail.DetailsScreen
-import com.natasha.pockemon.ui.theme.AppTheme
+import com.natasha.pockemon.ui.views.CustomTopAppBar
 import com.natasha.pockemon.ui.views.UiStateContent
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import org.jetbrains.compose.resources.stringResource
+import pockemon.composeapp.generated.resources.Res
+import pockemon.composeapp.generated.resources.app_name
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 class HomeScreen : Screen {
 
     @Composable
     override fun Content() {
         val viewModel = koinScreenModel<HomeViewModel>()
         val uiState by viewModel.uiState.collectAsState()
-        AppTheme {
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = { Text("My App") }
-                    )
-                }
-            ) { paddingValues ->
-                val navigator = LocalNavigator.currentOrThrow
-                UiStateContent(
-                    uiState = uiState.uiState,
-                    retryCallback = { viewModel.getPokemons() }
-                ) { content ->
-                    HomePage(
-                        content = content,
-                        onItemClicked = { id ->
-                            navigator.push(DetailsScreen(id))
-                        },
-                        modifier = Modifier.padding(paddingValues)
-                    )
-                }
+        Scaffold(
+            topBar = {
+                CustomTopAppBar(
+                    title = stringResource(Res.string.app_name)
+                )
+            }
+        ) { paddingValues ->
+            val navigator = LocalNavigator.currentOrThrow
+            UiStateContent(
+                uiState = uiState.uiState,
+                retryCallback = { viewModel.getPokemons() }
+            ) { content ->
+                HomePage(
+                    content = content,
+                    onItemClicked = { id ->
+                        navigator.push(DetailsScreen(id))
+                    },
+                    modifier = Modifier.padding(paddingValues)
+                )
             }
         }
     }
@@ -70,11 +70,12 @@ class HomeScreen : Screen {
 fun HomePage(
     content: HomeContent,
     onItemClicked: (Int) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxWidth(),
-        state = rememberLazyListState()
+        modifier = modifier.fillMaxSize(),
+        state = rememberLazyListState(),
+        contentPadding = PaddingValues(vertical = 24.dp)
     ) {
         itemsIndexed(content.pokemonList) { index, pokemon ->
             HomeItemList(
@@ -90,16 +91,20 @@ fun HomePage(
 fun HomeItemList(
     pokemon: Pokemon,
     onItemClicked: (Int) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier.clickable {
-        onItemClicked.invoke(pokemon.id)
-    }) {
+    Row(
+        modifier = modifier.fillMaxWidth()
+            .clickable {
+                onItemClicked.invoke(pokemon.id)
+            },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         KamelImage(
             resource = {
                 asyncPainterResource(pokemon.imageUrl)
             },
-            modifier = Modifier.size(30.dp),
+            modifier = Modifier.size(80.dp),
             contentDescription = null
         )
 
@@ -109,7 +114,7 @@ fun HomeItemList(
         ) {
             Text(
                 text = pokemon.name,
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.titleLarge
             )
 
             Text(

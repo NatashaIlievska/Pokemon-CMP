@@ -11,6 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
+import pockemon.composeapp.generated.resources.Res
+import pockemon.composeapp.generated.resources.try_again
 
 @Composable
 fun ErrorView(errorMessage: String, modifier: Modifier = Modifier, onRetryPress: (() -> Unit)) {
@@ -32,7 +35,7 @@ fun ErrorView(errorMessage: String, modifier: Modifier = Modifier, onRetryPress:
                 .padding(top = 20.dp)
         ) {
             Text(
-                text = "Try again"
+                text = stringResource(Res.string.try_again)
             )
         }
     }
